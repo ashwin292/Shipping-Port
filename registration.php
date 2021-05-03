@@ -5,8 +5,8 @@
 		.centered {
   transform: translate(65%, 90%);
 }
-body { 
-  background: url(images/home.jpeg) no-repeat center center fixed; 
+body {
+  background: url(images/home.jpeg) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -21,6 +21,9 @@ body {
       <div class="col-4">
          <div class="mb-3">
                <input id="name" name="name" type="text" class="form-control" placeholder="Enter Name">
+         </div>
+				 <div class="mb-3">
+               <input id="cname" name="cname" type="text" class="form-control" placeholder="Enter Country Name">
          </div>
          <div class="mb-3">
                <input class="form-control" id="email" name="email" type="text"  aria-describedby="emailHelp" placeholder="Enter Email">

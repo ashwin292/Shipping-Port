@@ -11,6 +11,7 @@
 
     <?php
 
+    include 'test.php';
     include 'port_status.php';
 
     $servername = "us-cdbr-east-03.cleardb.com";
@@ -27,19 +28,20 @@
    {
     //$user_id = mysqli_real_escape_string($conn, $_REQUEST['user_id']);
     $name = mysqli_real_escape_string($conn, $_REQUEST['name']);
+		$cname = mysqli_real_escape_string($conn, $_REQUEST['cname']);
     $email = mysqli_real_escape_string($conn, $_REQUEST['email']);
     $password = mysqli_real_escape_string($conn, $_REQUEST['password']);
     $hash = password_hash($password, PASSWORD_DEFAULT);
 
     if($name != NULL and $email != NULL and $password != NULL)
     {
-        $sql = "INSERT INTO users_180b (name, email, password) VALUES 
-                ('$name', '$email', '$hash')";
+        $sql = "INSERT INTO users_180b (name, email, password,Country) VALUES
+                ('$name', '$email', '$hash', '$cname')";
 
         if(mysqli_query($conn, $sql))
         {
             $sql = "select user_id from users_180b where (name='$name' and email='$email' and password='$hash')";
-            
+
             if($result = mysqli_query($conn, $sql))
             {
                 $id;
@@ -49,9 +51,9 @@
                     {
                         // Store the from country Id
                         $id = $row[0];
-                    } 
+                    }
                 }
-            
+
                 echo $name." with user id ".$id." added successfully\n";
             }
         }
@@ -65,7 +67,7 @@
         echo "Please fill all the details!!!";
     }
 
-    
+
 }
 
 
@@ -78,22 +80,25 @@ else if(isset($_POST['submit']))
     $arr_date = mysqli_real_escape_string($conn, $_REQUEST['arrdate']);
     $dep_date = mysqli_real_escape_string($conn, $_REQUEST['depdate']);
     $trade = mysqli_real_escape_string($conn, $_REQUEST['trade']);
-    $ctype = mysqli_real_escape_string($conn, $_REQUEST['ctype']);
     $exp_code = mysqli_real_escape_string($conn, $_REQUEST['expcode']);
     $imp_code = mysqli_real_escape_string($conn, $_REQUEST['impcode']);
 
     $exp_array = explode(",",str_replace(" ", "", $exp_code));
     $imp_array = explode(",",str_replace(" ", "", $imp_code));
 
+
+
+    // print_r($exp_array);
+    // print_r($imp_array);
+
     $sql = "select Id from country where (Name='$from')";
     $send;
     $port_no;
     $receive;
-    $share = False;
 
     function insertShipDetails()
     {
-        global $ctype,$send, $assign_port, $imp_array, $exp_array,$trade, $shipno,$arr_date,$dep_date,$ship_name,$conn,$port_no;
+        global $send, $assign_port, $imp_array, $exp_array,$trade, $shipno,$arr_date,$dep_date,$ship_name,$conn,$port_no;
         if($trade == 'import')
         {
             $noc = count($imp_array);
@@ -103,7 +108,7 @@ else if(isset($_POST['submit']))
            if(mysqli_query($conn, $sql))
                 {
                     $sql = "insert into ships_operating_seq values ('AU-PU-PL-DL-Done', '$shipno', '$send')";
-                    
+
                     if(mysqli_query($conn, $sql))
                     {
                         echo "<br>"."Ship (import) details updated successfully";
@@ -128,7 +133,7 @@ else if(isset($_POST['submit']))
            if(mysqli_query($conn, $sql))
                 {
                     $sql = "insert into ships_operating_seq values ('AL-PL-PU-DU-Done', '$shipno', '$send')";
-                    
+
                     if(mysqli_query($conn, $sql))
                     {
                         echo "<br>"."Ship (export) details updated successfully";
@@ -142,19 +147,6 @@ else if(isset($_POST['submit']))
                     echo "Error: " . $sql . "<br>" . $conn->error;
                 }
 
-                foreach($exp_array as $transit_code)
-                {
-                    $sql = "insert into container values ('$transit_code', '$ctype', '$shipno', $send, '$port_no')";
-
-                    if(mysqli_query($conn, $sql))
-                    {
-                        
-                    }
-                    else
-                    {
-                        echo "Error: " . $sql . "<br>" . $conn->error;
-                    }
-                }
 
         }
 
@@ -166,9 +158,9 @@ else if(isset($_POST['submit']))
             '$send', '$port_no')";
 
             if(mysqli_query($conn, $sql))
-            {
+                {
                     $sql = "insert into ships_operating_seq values ('AU-PU-PL-DL-Done', '$shipno', '$send')";
-                    
+
                     if(mysqli_query($conn, $sql))
                     {
                         echo "<br>"."Ship (import) details updated successfully";
@@ -179,7 +171,7 @@ else if(isset($_POST['submit']))
                     }
 
                     $sql = "insert into ships_operating_seq values ('AL-PL-PU-DU-Done', '$shipno', '$send')";
-                    
+
                     if(mysqli_query($conn, $sql))
                     {
                         echo "<br>"."Ship (export) details updated successfully";
@@ -187,33 +179,17 @@ else if(isset($_POST['submit']))
                     else
                     {
                         echo "Error: " . $sql . "<br>" . $conn->error;
-                    }     
-            }
-            else
-            {
-                    echo "Error: " . $sql . "<br>" . $conn->error;
-            }
-                
-                foreach($exp_array as $transit_code)
-                {
-                    $sql = "insert into container values ('$transit_code', '$ctype', '$shipno', '$send', '$port_no')";
-
-                    if(mysqli_query($conn, $sql))
-                    {
-                        
-                    }
-                    else
-                    {
-                        echo "Error: " . $sql . "<br>" . $conn->error;
                     }
                 }
-
+                else{
+                    echo "Error: " . $sql . "<br>" . $conn->error;
+                }
         }
     }
 
     function insertReq()
     {
-        global $send,$port_no,$share, $from, $to, $shipno, $arr_date, $dep_date, $trade, $exp_code, $imp_code, $conn, $imp_array, $assign_port;
+        global $from, $to, $shipno, $arr_date, $dep_date, $trade, $exp_code, $imp_code, $conn, $imp_array, $assign_port;
 
         $req_sts = True;
 
@@ -227,7 +203,7 @@ else if(isset($_POST['submit']))
 
                 if ($result->num_rows > 0)
                 {
-                    
+
                 }
                 else
                 {
@@ -245,21 +221,16 @@ else if(isset($_POST['submit']))
 
                     if(mysqli_query($conn, $sql))
                     {
-                        echo "<br>"."Request Accepted Successfully\n";
+                        echo "Request Accepted Successfully\n";
 
                         insertShipDetails();
-
-                        if($share)
-                        {
-                            DeductTariff($send,$port_no);
-                        }
                     }
                     else
                     {
                         echo "Error: " . $sql . "<br>" . $conn->error;
                     }
             }
-            
+
         }
         else if($trade == 'both')
         {
@@ -272,7 +243,7 @@ else if(isset($_POST['submit']))
 
                 if ($result->num_rows > 0)
                 {
-                    
+
                 }
                 else
                 {
@@ -290,14 +261,9 @@ else if(isset($_POST['submit']))
 
                     if(mysqli_query($conn, $sql))
                     {
-                        echo "<br>"."Request Accepted Successfully\n";
+                        echo "Request Accepted Successfully\n";
 
                         insertShipDetails();
-
-                        if($share)
-                        {
-                            DeductTariff($send,$port_no);
-                        }
                     }
                     else
                     {
@@ -315,21 +281,16 @@ else if(isset($_POST['submit']))
 
             if(mysqli_query($conn, $sql))
             {
-                echo "<br>"."Request Accepted Successfully\n";
+                echo "Request Accepted Successfully\n";
 
                 insertShipDetails();
-
-                if($share)
-                {
-                    DeductTariff($send,$port_no);
-                }
             }
             else
             {
                 echo "Error: " . $sql . "<br>" . $conn->error;
             }
         }
-            
+
     }
 
     // Search for 'from' country Id
@@ -407,34 +368,10 @@ else if(isset($_POST['submit']))
                                                     if(checksharedPort($send) == 'AV')
                                                     {
                                                         echo "own port NA but shared port AV";
-
-                                                        $sql = "select * from shares where (Id='$send')";                    
-                                                   
-                                                        $result = $conn->query($sql);
-                                                   
-                                                           if($result->num_rows > 0)
-                                                            {
-                                                                //Country shares other port
-                                                   
-                                                                while($row = mysqli_fetch_array($result))
-                                                                {
-                                                   
-                                                                    $port_no = $row['Port_Number'];
-                                                                }
-
-                                                                $share = True;
-
-                                                                insertReq();
-                                                            }
-                                                   
-                                                            else
-                                                            {
-                                                               echo "Error: " . $sql . "<br>" . $conn->error;
-                                                            }
                                                     }
                                                     else
                                                     {
-                                                        echo "own port NA and shared port NA/AS - Cannot Accept Request";
+                                                        echo "own port NA and shared port also NA";
                                                     }
                                                 }
                                                 else
@@ -448,7 +385,7 @@ else if(isset($_POST['submit']))
                                                 echo "trade ".$trade;
                                                 if($trade == 'import')
                                                 {
-                                                    insertReq(); 
+                                                    insertReq();
                                                 }
                                                 else
                                                 {
@@ -457,43 +394,19 @@ else if(isset($_POST['submit']))
                                                         if(checksharedPort($send) == 'AV')
                                                         {
                                                             echo "own port AS but shared port AV";
-
-                                                            $sql = "select * from shares where (Id='$send')";                    
-                                                   
-                                                            $result = $conn->query($sql);
-                                                   
-                                                           if($result->num_rows > 0)
-                                                            {
-                                                                //Country shares other port
-                                                   
-                                                                while($row = mysqli_fetch_array($result))
-                                                                {
-                                                   
-                                                                    $port_no = $row['Port_Number'];
-                                                                }
-
-                                                                $share = True;
-
-                                                                insertReq();
-                                                            }
-                                                   
-                                                            else
-                                                            {
-                                                               echo "Error: " . $sql . "<br>" . $conn->error;
-                                                            }
                                                         }
                                                         else if(checksharedPort($send) == 'AS')
                                                         {
-                                                            echo "<br>"."own port AS and shared port also AS - Cannot Accept Request";
+                                                            echo "own port AS and shared port also AS";
                                                         }
                                                         else
                                                         {
-                                                            echo "<br>"."own port AS and shared port NA - Cannot Accept Request";   
+                                                            echo "own port AS and shared port NA";
                                                         }
                                                     }
                                                     else
                                                     {
-                                                        echo "<br>"."own port AS and doesn't share port - Cannot Accept Request";
+                                                        echo "own port AS and doesn't share port";
                                                     }
                                                 }
                                             }
@@ -509,43 +422,17 @@ else if(isset($_POST['submit']))
                                         echo "Error: " . $sql . "<br>" . $conn->error;
                                     }
                                 }
-                            
+
                                 else
                                 {
-                                    //Doesn't owns a port
 
                                     if(sharesPort($send))
                                     {
                                         if(checksharedPort($send) == 'AV')
                                         {
                                             echo "Shared port Available";
-
-                                            $sql = "select * from shares where (Id='$send')";                    
-                                                   
-                                                        $result = $conn->query($sql);
-                                                   
-                                                           if($result->num_rows > 0)
-                                                            {
-                                                                //Country shares other port
-                                                   
-                                                                while($row = mysqli_fetch_array($result))
-                                                                {
-                                                   
-                                                                    $port_no = $row['Port_Number'];
-                                                                }
-
-                                                                $share = True;
-
-                                                                insertReq();
-                                                            }
-                                                   
-                                                            else
-                                                            {
-                                                               echo "Error: " . $sql . "<br>" . $conn->error;
-                                                            }
                                         }
-                                        else
-                                        {
+                                        else{
                                             echo "Shared port not available";
                                         }
                                     }
@@ -569,7 +456,7 @@ else if(isset($_POST['submit']))
                     }
                     else
                     {
-                        echo "Error: " . $sql . "<br>" . $conn->error; 
+                        echo "Error: " . $sql . "<br>" . $conn->error;
                     }
                 }
                 else

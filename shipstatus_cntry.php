@@ -1,37 +1,10 @@
-<style>
-table {
-  border-collapse: collapse;
-  width: 80%;
-}
-
-th, td {
-  text-align: left;
-  padding: 8px;
-}
-
-tr:nth-child(even){background-color: #f2f2f2}
-
-th {
-  background-color: #4CAF50 !important;
-  color: white;
-}
-</style>
-
-
 <?php
+session_start();
 $servername = "us-cdbr-east-03.cleardb.com";
 $username = "b474b95ea4f970";
 $password = "46b36be7";
 $db = "heroku_989d675bc42ca01";
 $conn = new mysqli($servername, $username, $password, $db);
-
-
-if ($conn->connect_error){
-	die("Connection failed: ". $conn->connect_error);
-}
-
-
-$sql = "select  * from request ; ";
 
 echo "<head>
 					<link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css\" rel=\"stylesheet\">
@@ -121,46 +94,58 @@ echo "<head>
 							</nav>
 							<div class="hero-image">
 					  <div class="hero-text">
-						<h1 style="font-size:40px">Shipping Port Management System</h1>
+						<h1 style="font-size:40px">Export/Import Report</h1>
 					  </div>
 					</div>';
-echo "<h4> REQUEST SUMMARY </h4>";
 
-echo "<table border='1' class='table'>
-    <tr>
-    <th> Origin Country </th>
-		<th> Destination Country </th>
-    <th> Ship Number</th>
-    <th> Arrival Date</th>
-		<th> Departure Date</th>
-    <th> Trade Type </th>
-    <th> Request Status </th>
-    </tr>";
 
-		if($result = mysqli_query($conn, $sql))
-         {
-             if(mysqli_num_rows($result) > 0){
+if ($conn->connect_error){
+	die("Connection failed: ". $conn->connect_error);
+}
 
-                 while($row = $result->fetch_assoc()) {
-						       echo "<tr>";
-						       echo "<td>". $row["From_Country"] . "</td>";
-									 echo "<td>". $row["To_Country"] . "</td>";
-						       echo "<td>". $row["Ship_Number"] . "</td>";
-						       echo "<td>". $row["Arrival_Date"] . "</td> " ;
-									 echo "<td>". $row["Departure_Date"] . "</td> " ;
-                   echo "<td>". $row["Trade_Type"] . "</td> " ;
-                   echo "<td>". $row["Status"] . "</td> " ;
-						       echo "</tr>";
-             }
-         }
-			 }
-   else
-      {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-      }
+$c_id =$_SESSION['country'] ;
+//echo $c_id;
+$ship_no = $_POST['shipnumber'];
+//echo $ship_no ;
+$sql_c= " select Id from COUNTRY where Name = '".$c_id."'";
+$id_res = mysqli_query($conn, $sql_c);
+$r = $id_res->fetch_assoc();
 
-echo "</table>". "<br>" . "<br>" ;
+$Id=$r["Id"];
 
+//echo $Id;
+$sql_p= "select Curr_Status,Name from SHIPS where Id = '".$Id."' and Number = '".$ship_no."' ";
+$p_res = mysqli_query($conn, $sql_p);
+$p = $p_res->fetch_assoc();
+$status=$p["Curr_Status"];
+$shipname=$p["Name"];
+
+
+if ($status == "AL"){
+	echo "<br>"."<br>"." The ship  ".$shipname." current status is - Arrived Loaded ";
+}
+else if ($status == "AU"){
+	echo "<br>"."<br>"." The ship  ".$shipname." current status is - Arrived Unloaded ";
+}
+else if ($status == "DL"){
+	echo "<br>"."<br>"." The ship  ".$shipname." current status is - Departed Loaded ";
+}
+else if ($status == "DU"){
+	echo "<br>"."<br>"." The ship  ".$shipname." current status is - Departed Unloaded ";
+}
+else if ($status == "PL"){
+	echo "<br>"."<br>"." The ship  ".$shipname." current status is - Present Loaded ";
+}
+else if ($status == "PU"){
+	echo "<br>"."<br>"." The ship  ".$shipname." current status is - Present Unloaded ";
+}
+else if ($status == "Done"){
+	echo "<br>"."<br>"." The ship  ".$shipname." current status is - Done ";
+}
+
+else  {
+	echo "<br>"."<br>"." Please check ship number ";
+}
 
 
 

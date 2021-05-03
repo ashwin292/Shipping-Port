@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
 	<title></title>
 	<style>
@@ -15,7 +14,7 @@
 .hero-image {
   background-image: url("/images/shipping.jpeg");
   background-color: #cccccc;
-  height: 300px;
+  height: 180px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -29,6 +28,13 @@
   left: 50%;
   transform: translate(-50%, -50%);
   color: white;
+}
+.heading {
+    text-align: center;
+    background-color: cadetblue;
+    padding: 5px;
+    margin: 3px;
+    color: white;
 }
 	</style>
 </head>
@@ -80,38 +86,45 @@
             </ul>
           </div>
         </nav>
-<div class="hero-image">
+        <div class="hero-image">
   <div class="hero-text">
-    <h1 style="font-size:40px">Shipping Port Management System</h1>
+    <h1 style="font-size:40px">Report Request</h1>
   </div>
 </div>
-<div class="container-fluid">
-<div class="row mt-5">
-    <div class="col-sm-4">
-        <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Request Status Table</h5>
-            <a href="request_table.php" class="btn btn-primary">Requests</a>
-        </div>
-        </div>
-    </div>
-    <div class="col-sm-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Monthly Report Table</h5>
-                <a href="report_req_admin.php" class="btn btn-primary">Reports</a>
-            </div>
-        </div>
+<div class="row">
+   <div class="col-12 heading">
+      <h4>Report</h4>
+   </div>
+   <div class="col-12 offset-4  mt-2">
+   <form method = "post" action= report.php>
+                  <table width = "400" border =" 0" cellspacing = "1"
+                     cellpadding = "2">
 
-    </div>
-        <div class="col-sm-4">
-            <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Update Ship Status</h5>
-                <a href="shipupdate.php" class="btn btn-primary">Ship Status</a>
-        </div>
-        </div>
-    </div>
+
+                     <tr>
+                        <td width = "100">Start Date</td>
+                        <td><input name = "startdate" type = "Date" class="form-control"
+                           id = "startdate"></td>
+                     </tr>
+
+                     <tr>
+                        <td width = "100">End Date</td>
+                        <td><input name = "enddate" type = "Date" class="form-control"
+                           id = "enddate"></td>
+                     </tr>
+
+
+               <tr>
+                  <td width = "100"> </td>
+                  <td>
+                     <button name = "submit" type = "submit" class="btn btn-primary"
+                        id = "submit" >Submit</button>
+                  </td>
+               </tr>
+            </table>
+     </form>
+   </div>
 </div>
+
 </body>
 </html>

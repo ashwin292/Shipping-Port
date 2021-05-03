@@ -58,7 +58,7 @@
             <ul class="navbar-nav">
               <li class="nav-item active">
                 <a class="nav-link" href="#">
-                  Home 
+                  Home
                 </a>
               </li>
               <li class="nav-item">
@@ -97,9 +97,9 @@
    </div>
    <div class="col-12 offset-4  mt-2">
    <form method = "post" action = "database.php">
-                  <table width = "400" border =" 0" cellspacing = "1" 
+                  <table width = "400" border =" 0" cellspacing = "1"
                      cellpadding = "2">
-                  
+
                      <tr>
                         <td width = "100">From</td>
                         <td><input name = "from" type = "text" class="form-control"
@@ -111,11 +111,17 @@
                         <td><input name = "to" type = "text" class="form-control"
                            id = "to"></td>
                      </tr>
-                  
+
                      <tr>
                         <td width = "100">Ship No.</td>
                         <td><input name = "shipno" type = "number" class="form-control"
                            id = "shipno"></td>
+                     </tr>
+
+										 <tr>
+                        <td width = "100">Ship Name</td>
+                        <td><input name = "shipname" type = "text" class="form-control"
+                           id = "shipname"></td>
                      </tr>
 
                      <tr>
@@ -141,7 +147,7 @@
 
                      <tr>
                         <td width = "100">Export Code</td>
-                        <td><input name = "expcode" type = "text" class="form-control" 
+                        <td><input name = "expcode" type = "text" class="form-control"
                            id = "expcode"></td>
                      </tr>
 
@@ -155,15 +161,15 @@
                         <td width = "100"> </td>
                         <td> </td>
                      </tr>
-                  
+
                      <tr>
                         <td width = "100"> </td>
                         <td>
-                           <button name = "submit" type = "submit" class="btn btn-primary" 
+                           <button name = "submit" type = "submit" class="btn btn-primary"
                               id = "submit">Submit</button>
                         </td>
                      </tr>
-                  
+
                   </table>
                </form>
    </div>

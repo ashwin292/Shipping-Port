@@ -33,7 +33,7 @@ echo "<head>
 					  background-size: cover;
 					  position: relative;
 					}
-					
+
 					.hero-text {
 					  text-align: center;
 					  position: absolute;
@@ -71,7 +71,7 @@ echo "<head>
 								<ul class="navbar-nav">
 								  <li class="nav-item active">
 									<a class="nav-link" href="#">
-									  Home 
+									  Home
 									</a>
 								  </li>
 								  <li class="nav-item">
@@ -101,18 +101,19 @@ echo "<head>
 							</nav>
 							<div class="hero-image">
 					  <div class="hero-text">
-						<h1 style="font-size:40px">Shipping Port Management System</h1>
+						<h1 style="font-size:40px">Export/Import Report</h1>
 					  </div>
 					</div>';
-echo "<h3> Start Date: ".$startdate." </h3>";
-echo "<h3> End Date: ".$enddate."</h3>";
+
+echo "<br>"."Start Date: ".$startdate." ";
+echo " &nbsp;&nbsp;&nbsp; End Date: ".$enddate." "."<br>"."<br>";
 
 
 if ($conn->connect_error){
 	die("Connection failed: ". $conn->connect_error);
 }
 
-$c_id ="India";
+$c_id =$_SESSION['country'] ;
 $sql_c= " select Id from COUNTRY where Name = '".$c_id."'";
 $id_res = mysqli_query($conn, $sql_c);
 $r = $id_res->fetch_assoc();
@@ -140,8 +141,8 @@ $sql= "select Port_number, coalesce (count(*),0) as Total_ships,coalesce(sum(No_
 							and Number in (select Number from SHIPS_Operating_Seq where Operating_Seq like 'AL%') and Port_number ='".$port."'
 					group by Port_number;";
 
-					
-echo "<h4>Export Report </h4>";
+
+echo "<h5>Export Report </h5>";
 echo "<table border='1' class='table'>
     <tr>
     <th>Port Number</th>
@@ -177,7 +178,7 @@ echo "<table border='1' class='table'>
 
 echo "</table>"."<br>";
 
-echo "<h4>Import Report</h4>";
+echo "<h5>Import Report</h5>";
 
 echo "<table border='1' class='table'>
     <tr>

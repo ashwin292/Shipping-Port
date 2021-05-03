@@ -32,7 +32,7 @@ echo "<head>
 					  background-size: cover;
 					  position: relative;
 					}
-					
+
 					.hero-text {
 					  text-align: center;
 					  position: absolute;
@@ -52,7 +52,7 @@ echo "<head>
 					</head>";
 					echo '<body style="overflow-x:none">
 					<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-							  <a class="navbar-brand" href="#">
+							  <a class="navbar-brand" href="home.php">
 								Shipping Port
 							  </a>
 							  <button
@@ -69,8 +69,8 @@ echo "<head>
 							  <div class="collapse navbar-collapse" id="navbarNav">
 								<ul class="navbar-nav">
 								  <li class="nav-item active">
-									<a class="nav-link" href="#">
-									  Home 
+									<a class="nav-link" href="home.php">
+									  Home
 									</a>
 								  </li>
 								  <li class="nav-item">
@@ -100,18 +100,23 @@ echo "<head>
 							</nav>
 							<div class="hero-image">
 					  <div class="hero-text">
-						<h1 style="font-size:40px">Shipping Port Management System</h1>
+						<h1 style="font-size:40px">Tariff Report</h1>
 					  </div>
 					</div>';
-echo "<h4> Start Date: ".$startdate." </h4>";
-echo "<h4> End Date: ".$enddate."</h4>";
+
+
+
+		echo "<br>"."Start Date: ".$startdate." ";
+		echo " &nbsp;&nbsp;&nbsp; End Date: ".$enddate." "."<br>"."<br>";
+
+
 
 
 if ($conn->connect_error){
 	die("Connection failed: ". $conn->connect_error);
 }
 
-$c_id ="India";
+$c_id =$_SESSION['country'] ;
 $sql_c= " select Id from COUNTRY where Name = '".$c_id."'";
 $id_res = mysqli_query($conn, $sql_c);
 $r = $id_res->fetch_assoc();
@@ -137,18 +142,36 @@ $sql_tariff_paid="select s.Port_number as Port_number ,c1.Name as Name,c1.tarrif
 										and DATE(Departure_Date) <= '".$enddate."'
 										group by s.Port_number;" ;
 
+//
+//
+// $sql_tariff_earned="select s.Port_number as Port_number,c1.tarrif as tariff, count(*) as Total_ships
+// 									from SHIPS s
+// 									inner join (select p.Port_number,c.Name,c.tarrif
+// 													from ports p
+// 													inner join country c
+// 												on p.Id=c.Id) c1
+// 									on s.Port_number=c1.Port_number
+//
+// 									where s.Port_number = '".$port."'  and s.Id <> '".$Id."'
+// 									and DATE(Arrival_Date) >= '".$startdate."' and DATE(Departure_Date) <= '".$enddate."'
+// 									group by s.Port_number;		" ;
 
 
-$sql_tariff_earned="select s.Port_number as Port_number,c1.tarrif as tariff, count(*) as Total_ships
+
+
+$sql_tariff_earned="select s.Port_number as Port_number,c2.Name,c1.tarrif as tariff, count(*) as Total_ships
 									from SHIPS s
 									inner join (select p.Port_number,c.Name,c.tarrif
 													from ports p
 													inner join country c
 												on p.Id=c.Id) c1
 									on s.Port_number=c1.Port_number
+									left join country c2
+									on s.Id =c2.Id
 									where s.Port_number = '".$port."'  and s.Id <> '".$Id."'
 									and DATE(Arrival_Date) >= '".$startdate."' and DATE(Departure_Date) <= '".$enddate."'
-									group by s.Port_number;		" ;
+									group by s.Port_number,c2.Name;		" ;
+
 
 
 
@@ -202,6 +225,7 @@ echo "<h4>Tariff Earned Report</h4>";
 echo "<table border='1' class='table'>
 <tr>
 <th>Port Number</th>
+<th>Country</th>
 <th>Tariff Charge </th>
 <th>No. of Ships </th>
 <th>Total Tariff Paid </th>
@@ -213,6 +237,7 @@ echo "<table border='1' class='table'>
 			                 while($row_earn = $res_earn->fetch_assoc()) {
 									       echo "<tr>";
 									       echo "<td>". $row_earn["Port_number"] . "</td>";
+												 echo "<td>". $row_earn["Name"] . "</td> " ;
 												 echo "<td>". $row_earn["tariff"] . "</td> " ;
 												 echo "<td>". $row_earn["Total_ships"] . "</td> " ;
 												 echo "<td>". ($row_earn["tariff"]*$row_earn["Total_ships"]) . "</td> " ;

@@ -7,6 +7,7 @@ $db = "heroku_989d675bc42ca01";
 $conn = new mysqli($servername, $username, $password, $db);
 
 
+
 $countryid = $_POST["countryid"];
 $shipnumber = $_POST["shipnumber"];
 $curr_status = $_POST["curr_status"];
@@ -30,7 +31,7 @@ echo "<head>
 					  background-size: cover;
 					  position: relative;
 					}
-					
+
 					.hero-text {
 					  text-align: center;
 					  position: absolute;
@@ -68,7 +69,7 @@ echo "<head>
 								<ul class="navbar-nav">
 								  <li class="nav-item active">
 									<a class="nav-link" href="#">
-									  Home 
+									  Home
 									</a>
 								  </li>
 								  <li class="nav-item">
@@ -112,11 +113,9 @@ $sql= "Update Ships
        where Number = '".$shipnumber."' and Id = '".$countryid."' ";
 
 
-
 		if($result = mysqli_query($conn, $sql))
          {
-             echo " <h4 style='text-align: center;'>Updated Successfully. Click <a  style='text-align: center;' href='request_table.php'>Here </a> to return</h4>";
-          
+             echo " <h4 style='text-align: center;'>Updated Successfully. Click <a  style='text-align: center;' href='adminHome.php'>Here </a> to return</h4>";
 
          }
    else
@@ -127,5 +126,3 @@ $sql= "Update Ships
 echo "</table>";
 echo "</body>"
 ?>
-
-

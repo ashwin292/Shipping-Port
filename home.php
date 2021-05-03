@@ -52,7 +52,7 @@
             <ul class="navbar-nav">
               <li class="nav-item active">
                 <a class="nav-link" href="#">
-                  Home 
+                  Home
                 </a>
               </li>
               <li class="nav-item">
@@ -92,7 +92,7 @@
         <div class="card-body">
             <h5 class="card-title">Don't have a port?</h5>
             <p class="card-text">Click here to submit a request for the port.</p>
-            <a href="#" class="btn btn-primary">Request</a>
+            <a href="request.php" class="btn btn-primary">Request</a>
         </div>
         </div>
     </div>
@@ -101,7 +101,7 @@
             <div class="card-body">
                 <h5 class="card-title">Your monthly reports!</h5>
                 <p class="card-text">Click here to find out your monthly reports </p>
-                <a href="#" class="btn btn-primary">Report</a>
+                <a href="report_req.php" class="btn btn-primary">Report</a>
             </div>
         </div>
     </div>
@@ -110,7 +110,7 @@
             <div class="card-body">
                 <h5 class="card-title">Your Ship Status!</h5>
                 <p class="card-text">Click here to find out your ship's status </p>
-                <a href="#" class="btn btn-primary">Ship Status</a> 
+                <a href="shipstatus_country.php" class="btn btn-primary">Ship Status</a>
     </div>
     </div>
 </div>
