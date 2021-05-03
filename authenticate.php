@@ -29,11 +29,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if(password_verify($password, $row['password']) && $row['email'] == $email) {
 
             $_SESSION['country'] =  $row["Country"];
+            $_SESSION['name'] = $row["name"];
             header('Location: home.php');
         }
         else {
-            echo " Not Correct Credentials";
-            header('Location: index.php');
+            header('Location: index.php?status=Invalid Credentials');
         }
 
     } else {

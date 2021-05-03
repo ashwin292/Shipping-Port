@@ -6,6 +6,8 @@ $password = "46b36be7";
 $db = "heroku_989d675bc42ca01";
 $conn = new mysqli($servername, $username, $password, $db);
 
+$loginusername = $_SESSION['name'];
+
 
 $startdate = $_POST["startdate"];
 $enddate = $_POST["enddate"];
@@ -73,19 +75,22 @@ echo '<body style="overflow-x:none">
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">
-                  Features
+                 
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">
-                  Pricing
+                
                 </a>
               </li>
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
               <li class="nav-item">
                 <a class="nav-link" href="#">
-                  Hi Kesiya Raj
+                <?php
+                echo "Hi " .$loginusername." ";
+                ?>
+
                 </a>
               </li>
               <li class="nav-item">
