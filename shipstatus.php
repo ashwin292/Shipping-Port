@@ -74,19 +74,19 @@ echo "<head>
 								  </li>
 								  <li class="nav-item">
 									<a class="nav-link" href="#">
-									  Features
+									 
 									</a>
 								  </li>
 								  <li class="nav-item">
 									<a class="nav-link" href="#">
-									  Pricing
+									 
 									</a>
 								  </li>
 								</ul>
 								<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 								  <li class="nav-item">
 									<a class="nav-link" href="#">
-									  Hi Kesiya Raj
+									  
 									</a>
 								  </li>
 								  <li class="nav-item">

@@ -8,6 +8,7 @@ $username = "b474b95ea4f970";
 $password = "46b36be7";
 $db = "heroku_989d675bc42ca01";
 $conn = new mysqli($servername, $username, $password, $db);
+$status = htmlspecialchars($_GET["status"]);
 
 if ($conn->connect_error){
     die("Connection failed: ". $conn->connect_error);
@@ -71,6 +72,9 @@ body {
                         <div class="mb-3">
                             <input  class="form-control" id="password" name="password" type="password" placeholder="Enter Password">
                         </div>
+                        <label style="color:red"><?php 
+                        echo $status ;
+                        ?></label>
                         <button type="submit" class="btn btn-primary btn-block" style="width:100%">Login </button>
                         <label>Don't have an account? Click <a href="registration.php">Here</a> to signup</label>
 
